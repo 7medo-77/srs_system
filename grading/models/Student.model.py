@@ -1,4 +1,5 @@
 from django.db import models
+from Department.model import Department
 
 # Create your models here.
 
@@ -23,5 +24,5 @@ class Student(models.Model):
     """
     String representation for CSV parsing
     """
-    attributes = ",".join([str(value) for attribute, value in vars(self).items()])
+    attributes = ",".join([str(value) for value in vars(self).values()])
     return attributes

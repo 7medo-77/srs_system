@@ -1,3 +1,6 @@
+from django.db import models
+from Department.model import Department
+
 class Instructor(models.Model):
   instructor_id = models.AutoField(primary_key=True)
   first_name = models.CharField(max_length=255)

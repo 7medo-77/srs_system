@@ -1,9 +1,14 @@
+from Department.model import Department
+from Instructor.model import Instructor
+from Student.model import Student
+
 class Course(models.Model):
   course_id = models.AutoField(primary_key=True)
   course_name = models.CharField(max_length=255)
   course_code = models.CharField(max_length=20, unique=True)
   description = models.TextField()
   credits = models.IntegerField()
+  studentEnrollment = models.ManyToManyField(Student, through="StudentCourseEnrollment")
   department = models.ForeignKey(Department, on_delete=models.CASCADE)
   instructors = models.ManyToManyField(Instructor)
 
