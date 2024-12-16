@@ -6,7 +6,7 @@ class Instructor(models.Model):
   first_name = models.CharField(max_length=255)
   last_name = models.CharField(max_length=255)
   email = models.EmailField(unique=True)
-  phone_number = models.CharField(max_length=20)
+  phone_number = models.CharField(max_length=50)
   department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
 
   def __str__(self):
