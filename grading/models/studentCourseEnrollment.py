@@ -1,11 +1,13 @@
 from django.db import models
 from django.db.models import UniqueConstraint
-from Student.model import Student
-from Course.model import Course
+from grading.models.student import Student
+from grading.models.course import Course
+from grading.models.instructor import Instructor
 
 class StudentCourseEnrollment(models.Model):
   student = models.ForeignKey(Student, on_delete=models.CASCADE)
   course = models.ForeignKey(Course, on_delete=models.CASCADE)
+  instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
   date = models.DateField()
   semester = models.CharField(max_length=255)
   academic_year = models.IntegerField()

@@ -1,20 +1,12 @@
 from django.db import models
-from Department.model import Department
+from grading.models.department import Department
 
-# Create your models here.
-
-class Student(models.Model):
-  """
-  Student class
-  """
-  student_id = models.AutoField(primary_key=True)
+class Instructor(models.Model):
+  instructor_id = models.AutoField(primary_key=True)
   first_name = models.CharField(max_length=255)
   last_name = models.CharField(max_length=255)
   email = models.EmailField(unique=True)
   phone_number = models.CharField(max_length=20)
-  enrollment_date = models.DateField()
-  major = models.CharField(max_length=255)
-  date_of_birth = models.DateField()
   department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
 
   def __str__(self):

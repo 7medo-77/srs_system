@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'grading',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,16 @@ WSGI_APPLICATION = 'GradingSystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Grading_system',
+        'USER': 'grader',
+        'PASSWORD': 'password',
+        'HOST': '127.0.0.1',  # or 'localhost'
+        'PORT': 3306,       # Default MySQL port
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 

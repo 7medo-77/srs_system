@@ -1,6 +1,7 @@
-from Department.model import Department
-from Instructor.model import Instructor
-from Student.model import Student
+from django.db import models
+from grading.models.department import Department
+from grading.models.instructor import Instructor
+from grading.models.student import Student
 
 class Course(models.Model):
   course_id = models.AutoField(primary_key=True)
