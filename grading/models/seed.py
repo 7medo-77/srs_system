@@ -23,7 +23,7 @@ fake_department = {
 
     ],
     "Mechanical Engineering": [
-        "Thermodynamics",
+        "Thermodynamics and Fluid Dynamics",
         "Fluid Mechanics",
         "Materials Science and Engineering",
         "Computer-Aided Design",
@@ -93,34 +93,41 @@ departments = Department.objects.all()
 # Instructor.objects.bulk_create(instructors)  # Bulk create instructors
 
 # Generate Courses (considering department and instructor relationships)
-courses = []
-instructors = Instructor.objects.all()
+courseArray = []
 
 for dep, courses in fake_department.items():
 # for dep in departments:
     for index, course in enumerate(courses):
-        course_code_initials = ''.join([name[0] for name in fake_department[dep][index].split(' ') if name[0].isupper()])
+        course_code_initials = ''.join([name[0] for name in course.split(' ') if name[0].isupper()])
         result_department = Department.objects.get(name=dep)
-        course = Course(
-            course_name=fake_department[dep].courses[index],
+
+        courseObject = Course(
+            course_name=fake_department[dep][index],
             # course_code=fake.unique.lexify(text="CS###"),
             course_code=fake.unique.lexify(text=f"{course_code_initials}???", letters="0123456789"),
-            description=fake.text(),
-            credits=random_within_range(3, 4),
+            # description=fake.text(),
+            credits=random_within_range(1, 5),
             department=result_department,
         )
+        courseArray.append(courseObject)
 
-        # # Assign random instructors to the course (avoid duplicates)
-        # instructor_choices = instructors.copy()
-        # instructor_count = random_within_range(1, len(instructor_choices))
-        # assigned_instructors = []
-        # for _ in range(instructor_count):
-        #     chosen_instructor = instructor_choices.pop(randint(0, len(instructor_choices) - 1))
-        #     assigned_instructors.append(chosen_instructor)
-        # course.instructors.add(*assigned_instructors)
-        courses.append(course)
-print(courses)
-Course.objects.bulk_create(courses)  # Bulk create courses with assigned instructors
+# Course.objects.bulk_create(courseArray)  # Bulk create courses with assigned instructors
+
+instructors = Instructor.objects.all()
+
+# length = len(instructors)
+# instructors_per_dept = len(instructors) - (length % len(departments)) / len(departments)
+# dept_instructor_dict = {
+#     departmentObject.name: {} for departmentObject in Department.objects.all()
+# }
+
+for index, inst in enumerate(instructors):
+    # courses = list(inst.department.course_set.all())
+    # inst.course_set.set(random.sample(courses, k=random.randint(1, 3)))
+    print([course.course_name for course in inst.course_set.all() ])
+
+
+# print(courseArray)
 
 # # Generate Students
 # students = []
