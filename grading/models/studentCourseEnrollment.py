@@ -14,7 +14,7 @@ class StudentCourseEnrollment(models.Model):
   grade = models.DecimalField(max_digits=3, decimal_places=2)
 
   def __repr__(self):
-    attributes = ",".join([str(value) for value in vars(self).values()])
+    attributes = ",".join([str(value) for value in vars(self).values()][1:])
     return attributes
 
   class Meta:

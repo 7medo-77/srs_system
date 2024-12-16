@@ -12,5 +12,5 @@ class Department(models.Model):
     """
     String representation for CSV parsing
     """
-    attributes = ",".join([str(value) for value in vars(self).values()])
+    attributes = ",".join([str(value) for value in vars(self).values()][1:])
     return attributes
