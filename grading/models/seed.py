@@ -114,14 +114,14 @@ for dep, courses in fake_department.items():
         )
         courseArray.append(courseObject)
 
-# Course.objects.bulk_create(courseArray)  # Bulk create courses with assigned instructors
+Course.objects.bulk_create(courseArray)  # Bulk create courses with assigned instructors
 
 instructors = Instructor.objects.all()
 
-# for index, inst in enumerate(instructors):
-#     courses = list(inst.department.course_set.all())
-#     inst.courses.set(random.sample(courses, k=random.randint(1, 3)))
-#     print([course.course_name for course in inst.course_set.all() ])
+for index, inst in enumerate(instructors):
+    courses = list(inst.department.courses.all())
+    inst.courses.set(random.sample(courses, k=random.randint(1, 3)))
+    print([course.course_name for course in inst.courses.all() ])
 
 
 # print(courseArray)
@@ -129,10 +129,10 @@ instructors = Instructor.objects.all()
 # Generate Students
 students = []
 enrollments = []
-for course in Course.objects.all():
-    instructors = list(course.instructors.all())
+for department in Department.objects.all():
+    courses = list(department.courses.all())
 
-    for i in range(random.randint(30, 50)):
+    for i in range(random.randint(150, 250)):
         student = Student.objects.create(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
@@ -143,30 +143,39 @@ for course in Course.objects.all():
             major=fake.job(),
             date_of_birth=fake.date_between(start_date=datetime.date(1997, 1, 1) , end_date=datetime.date(2007, 12, 30)),
         )
-        fake_year = random_within_range(2020, 2024)
-        fake_semester=fake.random.choice(["Fall", "Spring", "Summer"]),
+        for course in courses:
+            float_num = random.uniform(0,1)
+            probability = round(float_num)
+            # print(course.instructor)
 
-        if fake_semester == "fall":
-            fake_date = fake.date_between(start_date=datetime.date(fake_year, 8, 1) , end_date=datetime.date(fake_year, 10, 15))
-        elif fake_semester == "spring":
-            fake_date = fake.date_between(start_date=datetime.date(fake_year, 1, 1) , end_date=datetime.date(fake_year, 2, 20))
-        else:
-            fake_date = fake.date_between(start_date=datetime.date(fake_year, 6, 1) , end_date=datetime.date(fake_year, 7, 15))
+            if probability == 0:
+                continue
 
-        fake_grade=round(random.uniform(60, 99), 2)
-        print(fake_grade)
+            instructors = list(course.instructors.all())
+            fake_year = random_within_range(2020, 2024)
+            fake_semester=fake.random.choice(["Fall", "Spring", "Summer"]),
 
-        enrollment = StudentCourseEnrollment.objects.create(
-            student=student,
-            course=course,
-            instructor=random.choice(instructors),
-            date=fake_date,
-            semester=fake_semester,
-            academic_year=fake_year,
-            grade=fake_grade
-        )
+            if fake_semester == "fall":
+                fake_date = fake.date_between(start_date=datetime.date(fake_year, 8, 1) , end_date=datetime.date(fake_year, 10, 15))
+            elif fake_semester == "spring":
+                fake_date = fake.date_between(start_date=datetime.date(fake_year, 1, 1) , end_date=datetime.date(fake_year, 2, 20))
+            else:
+                fake_date = fake.date_between(start_date=datetime.date(fake_year, 6, 1) , end_date=datetime.date(fake_year, 7, 15))
+
+            fake_grade=round(random.uniform(60, 99), 2)
+            # print(fake_grade)
+
+            enrollment = StudentCourseEnrollment.objects.create(
+                student=student,
+                course=course,
+                instructor=random.choice(instructors),
+                date=fake_date,
+                semester=fake_semester,
+                academic_year=fake_year,
+                grade=fake_grade
+            )
+            enrollments.append(enrollments)
         students.append(student)
-        enrollments.append(enrollments)
 
 # print(students)
 for stu in students:
@@ -195,6 +204,7 @@ for stu in students:
 
 print(f"Generated {len(departments)} Departments")
 print(f"Generated {len(instructors)} Instructors")
-# # print(f"Generated {len(courses)} Courses")
-# # print(f"Generated {len(students)} Students")
+print(f"Generated {len(courses)} Courses")
+print(f"Generated {len(students)} Students")
+print(f"Generated {len(enrollments)} Enrollments")
 # # # print(
