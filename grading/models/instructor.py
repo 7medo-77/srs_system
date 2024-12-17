@@ -7,7 +7,7 @@ class Instructor(models.Model):
   last_name = models.CharField(max_length=255)
   email = models.EmailField(unique=True)
   phone_number = models.CharField(max_length=50)
-  department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
+  department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, related_name="instructors")
 
   def __str__(self):
     return f"{self.first_name} {self.last_name}"

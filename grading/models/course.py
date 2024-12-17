@@ -10,8 +10,8 @@ class Course(models.Model):
   # description = models.TextField()
   credits = models.IntegerField()
   studentEnrollment = models.ManyToManyField(Student, through="StudentCourseEnrollment")
-  department = models.ForeignKey(Department, on_delete=models.CASCADE)
-  instructors = models.ManyToManyField(Instructor)
+  department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="courses")
+  instructors = models.ManyToManyField(Instructor, related_name="courses")
 
   def __str__(self):
       return self.course_name
