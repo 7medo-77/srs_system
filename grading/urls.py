@@ -1,5 +1,5 @@
 """
-URL configuration for GradingSystem project.
+URL configuration for grading app.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from grading.controllers.students_controller import getAllStudents
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('student/', include('grading.urls') ),
+  path('', getAllStudents, name='all-students'),
 ]

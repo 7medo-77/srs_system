@@ -1,0 +1,24 @@
+{% extends 'grading/base.html' %}
+{% block content %}
+  <h1>hello</h1>
+
+  {% for student in allStudents %}
+
+    <!-- <div class="media content-section">
+      <div class="media-body" >
+        <div class="article-title"></div>
+        <p class="article-content">{{ student }}</p>
+      </div>
+    </div> -->
+
+    <div class="card" style="width: 18rem;">
+      <!-- <img src="..." class="card-img-top" alt="..."> -->
+      <div class="card-body ">
+        <h5 class="card-title"> {{student.first_name}} </h5>
+        <p class="card-text">{{student}}</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock content %}
