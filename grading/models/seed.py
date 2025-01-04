@@ -67,12 +67,12 @@ if len(departmentResult) == 0:
             name=key, head_of_department=fake.name()
         )
         departments.append(department)
+    Department.objects.bulk_create(departments)  # Bulk create departments
 
 # print(departments)
 # for dept in departments:
 #   print(dept.department_id, dept.name, dept.head_of_department)
 
-Department.objects.bulk_create(departments)  # Bulk create departments
 # print(Department.objects.all().first().__repr__())
 
 departments = Department.objects.all()
@@ -92,13 +92,13 @@ if len(instructorResult) == 0:
                 department=department,
             )
             instructors.append(instructor)
+    Instructor.objects.bulk_create(instructors)  # Bulk create instructors
 
 # # print( instructors )
 # for instructor in instructors:
 #   print(instructor.instructor_id, instructor.first_name, instructor.last_name, instructor.email, instructor.department, instructor.phone_number)
 #   print('-'*30)
 
-Instructor.objects.bulk_create(instructors)  # Bulk create instructors
 
 # Generate Courses (considering department and instructor relationships)
 courseResult = Course.objects.all()
@@ -217,4 +217,3 @@ print(f"Generated {len(instructors)} Instructors")
 print(f"Generated {len(courseArray)} Courses")
 print(f"Generated {len(students)} Students")
 print(f"Generated {len(enrollments)} Enrollments")
-# # # print(
