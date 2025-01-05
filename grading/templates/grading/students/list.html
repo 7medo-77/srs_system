@@ -11,10 +11,15 @@
       </div>
     </div> -->
 
-    <div class="card" style="width: 18rem;">
+    </div><div class="card" style="width: 18rem;">
       <!-- <img src="..." class="card-img-top" alt="..."> -->
-      <div class="card-body ">
+      <div class="card-body">
         <h5 class="card-title"> {{student.first_name}} </h5>
+        <div class="container">
+          <p class="card-text">{{student.student_id}}</p>
+          <p class="card-text">{{student.email}}</p>
+          <p class="card-text">{{student.major}}</p>
+        </div>
         <p class="card-text">{{student}}</p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
