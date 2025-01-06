@@ -4,6 +4,8 @@ from grading.models.department import Department
 from grading.models.course import Course
 from grading.models.instructor import Instructor
 from grading.models.studentCourseEnrollment import StudentCourseEnrollment
+from authentication.models.AuthUser import AuthUser
+
 import datetime
 import random
 
@@ -79,19 +81,30 @@ departments = Department.objects.all()
 
 instructorResult = Instructor.objects.all()
 instructors = []
+instructor_profiles = []
 # Generate Instructors
 if len(instructorResult) == 0:
     for department in departments:
         instructor_count = random_within_range(8, 15)
         for _ in range(instructor_count):
-            instructor = Instructor(
-                first_name=fake.first_name(),
+            first_name=fake.first_name()
+            password=first_name
+            instructor_profile = AuthUser(
+                first_name=first_name,
                 last_name=fake.last_name(),
                 email=fake.email(),
-                phone_number=fake.lexify(text=('01?-????-????'), letters="0123456789"),
+                password=password,
+                phone_number=fake.lexify(text=('01?-'), letters="0125") + fake.lexify(text=('????-????'), letters="0123456789"),
+            )
+            instructor_profiles.append(instructor_profile)
+
+            instructor = Instructor(
+                user=instructor_profile,
                 department=department,
             )
             instructors.append(instructor)
+
+    AuthUser.objects.bulk_create(instructor_profiles)  # Bulk create instructor_profiles
     Instructor.objects.bulk_create(instructors)  # Bulk create instructors
 
 # # print( instructors )
@@ -148,7 +161,7 @@ if len(studentResult) == 0:
                 # phone_number=fake.phone_number(),
                 phone_number=fake.lexify(text=('01?-????-????'), letters="0123456789"),
                 # enrollment_date=fake.date_between(start_date=datetime.date(2019, 1, 1) , end_date=datetime.date(2024, 9, 1)),
-                major=fake.job(),
+                major=department,
                 date_of_birth=fake.date_between(start_date=datetime.date(1997, 1, 1) , end_date=datetime.date(2007, 12, 30)),
             )
             for course in courses:
