@@ -4,6 +4,7 @@ from authentication.models.AuthUser import AuthUser
 
 class Instructor(models.Model):
   instructor_id = models.AutoField(primary_key=True)
+
   # first_name = models.CharField(max_length=255)
   # last_name = models.CharField(max_length=255)
   # email = models.EmailField(unique=True)
@@ -13,7 +14,7 @@ class Instructor(models.Model):
   user = models.OneToOneField(
     AuthUser,
     on_delete=models.CASCADE,
-    related_name="profile",
+    related_name="instructor_profile",
   )
 
   def __str__(self):

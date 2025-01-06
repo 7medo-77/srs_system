@@ -25,4 +25,4 @@ class StudentCourseEnrollment(models.Model):
         name="uniqueEnrollment"
       )
     ]
-    db_table="studentEnrollment"
+    db_table="studentCourseEnrollments"

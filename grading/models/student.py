@@ -17,12 +17,11 @@ class Student(models.Model):
   # email = models.EmailField(unique=True)
   # phone_number = models.CharField(max_length=20)
 
-
   major = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="major")
   user = models.OneToOneField(
     AuthUser,
     on_delete=models.CASCADE,
-    related_name="profile",
+    related_name="student_profile",
   )
 
   def __str__(self):

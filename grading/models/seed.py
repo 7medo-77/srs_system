@@ -85,17 +85,23 @@ instructor_profiles = []
 # Generate Instructors
 if len(instructorResult) == 0:
     for department in departments:
-        instructor_count = random_within_range(8, 15)
+        instructor_count = random_within_range(15, 25)
         for _ in range(instructor_count):
-            first_name=fake.first_name()
+            first_name = fake.first_name()
+            last_name = fake.last_name()
             password=first_name
-            instructor_profile = AuthUser(
+            username=first_name + fake.random.choice(['_', '-', '@', '$', '^', '*', '%', '#']) + last_name
+
+            instructor_profile = AuthUser.objects.create_user(
+                role='instructor',
                 first_name=first_name,
-                last_name=fake.last_name(),
                 email=fake.email(),
                 password=password,
+                last_name=last_name,
+                username=username,
                 phone_number=fake.lexify(text=('01?-'), letters="0125") + fake.lexify(text=('????-????'), letters="0123456789"),
             )
+            # AuthUser.save(instructor_profile)
             instructor_profiles.append(instructor_profile)
 
             instructor = Instructor(
@@ -104,7 +110,7 @@ if len(instructorResult) == 0:
             )
             instructors.append(instructor)
 
-    AuthUser.objects.bulk_create(instructor_profiles)  # Bulk create instructor_profiles
+    # AuthUser.objects.bulk_create(instructor_profiles)  # Bulk create instructor_profiles
     Instructor.objects.bulk_create(instructors)  # Bulk create instructors
 
 # # print( instructors )
@@ -116,6 +122,7 @@ if len(instructorResult) == 0:
 # Generate Courses (considering department and instructor relationships)
 courseResult = Course.objects.all()
 courseArray = []
+instructors = Instructor.objects.all()
 
 if len(courseResult) == 0:
     for dep, courses in fake_department.items():
@@ -135,12 +142,17 @@ if len(courseResult) == 0:
 
     Course.objects.bulk_create(courseArray)  # Bulk create courses with assigned instructors
 
-    instructors = Instructor.objects.all()
-
     for index, inst in enumerate(instructors):
         courses = list(inst.department.courses.all())
         inst.courses.set(random.sample(courses, k=random.randint(1, 3)))
-        print([course.course_name for course in inst.courses.all() ])
+        # print(inst.user.username)
+        # print([course.course_name for course in inst.courses.all()])
+
+    # courses = Course.objects.all()
+    # # print(courses)
+    # for index, course in enumerate(courses):
+    #     print(course)
+    #     print([instructor for instructor in course.instructors.all()])
 
 
 # print(courseArray)
@@ -148,22 +160,34 @@ if len(courseResult) == 0:
 # Generate Students
 studentResult = Student.objects.all()
 students = []
+student_profiles = []
 enrollments = []
 if len(studentResult) == 0:
     for department in Department.objects.all():
         courses = list(department.courses.all())
 
-        for i in range(random.randint(150, 250)):
-            student = Student.objects.create(
-                first_name=fake.first_name(),
-                last_name=fake.last_name(),
+        for _ in range(random.randint(150, 250)):
+            first_name = fake.first_name()
+            last_name=fake.last_name()
+            password = first_name
+            username = first_name + fake.random.choice(['_', '-', '@', '$', '^', '*', '%', '#']) + fake.random.choice(['_', '-', '@', '$', '^', '*', '%', '#']) + last_name + fake.random.choice(['_', '-', '@', '$', '^', '*', '%', '#'])
+
+            student_profile = AuthUser.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                password=first_name,
+                username=username,
                 email=fake.email(),
-                # phone_number=fake.phone_number(),
-                phone_number=fake.lexify(text=('01?-????-????'), letters="0123456789"),
-                # enrollment_date=fake.date_between(start_date=datetime.date(2019, 1, 1) , end_date=datetime.date(2024, 9, 1)),
+                phone_number=fake.lexify(text=('01?-'), letters="0125") + fake.lexify(text=('????-????'), letters="0123456789"),
+            )
+            # AuthUser.save(student_profile)
+
+            student = Student.objects.create(
+                user=student_profile,
                 major=department,
                 date_of_birth=fake.date_between(start_date=datetime.date(1997, 1, 1) , end_date=datetime.date(2007, 12, 30)),
             )
+
             for course in courses:
                 float_num = random.uniform(0,1)
                 probability = round(float_num)
@@ -196,37 +220,15 @@ if len(studentResult) == 0:
                     grade=fake_grade
                 )
                 enrollments.append(enrollments)
+            student_profiles.append(student_profile)
             students.append(student)
-    Student.objects.bulk_create(students)  # Bulk create students
-
-# print(students)
-for stu in students:
-    print(stu.__repr__())
-
-# Generate Student Course Enrollments (considering student enrollment range)
-enrollmentResult = StudentCourseEnrollment.objects.all()
-enrollments = []
-if len( enrollmentResult ) == 0:
-    for student in students:
-        course_choices = courses.copy()  # Copy the list to avoid duplicates
-        enrollment_count = random_within_range(5, 7)
-        for _ in range(enrollment_count):
-            chosen_course = course_choices.pop(randint(0, len(course_choices) - 1))
-            enrollment = StudentCourseEnrollment(
-                student=student,
-                course=chosen_course,
-                instructor=chosen_course.instructors.first(),  # Pick one random instructor
-                date=fake.date(),
-                semester=fake.random.choice(["Fall", "Spring", "Summer"]),
-                academic_year=random_within_range(2022, 2024),
-                grade=round(fake.random.uniform(60, 100), 2),  # Random grades between 60 and 100 (rounded to 2 decimal places)
-            )
-            enrollments.append(enrollment)
-    print(enrollments)
-    StudentCourseEnrollment.objects.bulk_create(enrollments)  # Bulk create student enrollments
+    # Student.objects.bulk_create(students)  # Bulk create students
+    # StudentCourseEnrollment.objects.bulk_create(enrollments)  # Bulk create student enrollments
 
 print(f"Generated {len(departments)} Departments")
 print(f"Generated {len(instructors)} Instructors")
-print(f"Generated {len(courseArray)} Courses")
 print(f"Generated {len(students)} Students")
+print(f"Generated {len(instructor_profiles)} Instructor profiles")
+print(f"Generated {len(student_profiles)} Student profiles")
+print(f"Generated {len(courseArray)} Courses")
 print(f"Generated {len(enrollments)} Enrollments")
