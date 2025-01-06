@@ -14,3 +14,6 @@ class Department(models.Model):
     """
     attributes = ",".join([str(value) for value in vars(self).values()][1:])
     return attributes
+
+  class Meta:
+    db_table="departments"

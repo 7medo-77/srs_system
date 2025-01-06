@@ -22,3 +22,6 @@ class Course(models.Model):
     """
     attributes = ",".join([str(value) for value in vars(self).values()])
     return attributes
+
+  class Meta:
+    db_table="courses"
