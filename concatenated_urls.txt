@@ -1,0 +1,68 @@
+=== ./authentication/urls.py ===
+from django.contrib import admin
+from django.urls import path, include
+from .controllers.authController import log_in, sign_up
+
+urlpatterns = [
+    path('login/', log_in),
+    path('signup/', sign_up),
+]
+
+
+
+=== ./grading/urls.py ===
+"""
+URL configuration for grading app.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from grading.controllers.students_controller import getAllStudents
+
+urlpatterns = [
+    # path('', getAllStudents, name='all-students' ),
+    path('students/', getAllStudents, name='all-students'),
+    path('students/<int:student_id>', include('grading.urls') ),
+]
+
+
+=== ./GradingSystem/urls.py ===
+"""
+URL configuration for GradingSystem project.
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('authentication.urls') ),
+    path('grading/', include('grading.urls'))
+]
+
+
+

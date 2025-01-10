@@ -9,6 +9,7 @@ class Course(models.Model):
   course_code = models.CharField(max_length=20, unique=True)
   # description = models.TextField()
   credits = models.IntegerField()
+
   studentEnrollment = models.ManyToManyField(Student, through="StudentCourseEnrollment")
   department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="courses")
   instructors = models.ManyToManyField(Instructor, related_name="courses")

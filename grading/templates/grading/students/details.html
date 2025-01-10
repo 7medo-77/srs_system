@@ -1,0 +1,33 @@
+{% extends 'grading/students/dashboardBase.html' %}
+
+{% block title %}
+  View Grades
+{% endblock %}
+
+{% block student_breadcrumb %}
+    <li class="breadcrumb-item active">View Grades</li>
+{% endblock %}
+
+{% block content %}
+    <h1>Your Grades</h1>
+    <h2>{{ student.user.first_name }} {{ student.user.last_name }}</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+                <tr>
+                    <td>{{ enrollment.course.course_name }}</td>
+                    <td>{{ enrollment.grade }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>{{ gpa }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

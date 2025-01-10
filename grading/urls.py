@@ -16,8 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from grading.controllers.students_controller import getAllStudents
+from grading.controllers.studentsController import *
 
+app_name = 'grading'
 urlpatterns = [
-  path('', getAllStudents, name='all-students'),
+    # path('', getAllStudents, name='all-students' ),
+    path('students/', getAllStudents, name='all-students'),
+    path('students/<int:student_id>/', getStudentDetails, name='student-details'),
+    path('students/<int:student_id>/instructors/', getStudentInstructors, name='student-instructors'),
+    path('students/export-csv/', exportStudentsToCSV, name='export-students-csv'),
+    path('students/save-binary/', saveStudentsToBinary, name='save-students-binary'),
 ]
