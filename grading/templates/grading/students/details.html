@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block student_breadcrumb %}
-    <li class="breadcrumb-item active">View Grades</li>
+    <li class="breadcrumb-item active">Grades</li>
 {% endblock %}
 
 {% block content %}
-    <h1>Your Grades</h1>
-    <h2>{{ student.user.first_name }} {{ student.user.last_name }}</h2>
-    <table class="table">
+    <h1>Grades</h1>
+    <!-- <h2 class="pt-5">{{ student.user.first_name }} {{ student.user.last_name }}</h2> -->
+    <h2 class="pt-5">{{ student.user.first_name }} {{ student.user.last_name }} {{ student.user.id }} {{student.student_id}}  </h2>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Course</th>
@@ -26,7 +27,8 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td>{{ gpa }}</td>
+                <td colspan="1"><strong>GPA</strong></td>
+                <td colspan="1">{{ gpa }}</td>
             </tr>
         </tbody>
     </table>

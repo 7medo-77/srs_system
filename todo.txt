@@ -1,0 +1,2 @@
+Add breadcrumb and sidebar links
+Authorization for the back-end: Student should have access token specific only to that student

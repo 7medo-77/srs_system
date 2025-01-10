@@ -4,15 +4,16 @@
 
 {% block sidebar %}
     <!-- Student-specific sidebar -->
-    <a href="{% url 'student_dashboard' %}">Dashboard</a>
-    <a href="{% url 'view_grades' %}">View Grades</a>
-    <a href="{% url 'view_courses' %}">View Courses</a>
-    <a href="{% url 'logout' %}">Log Out</a>
+    <a href="{% url 'grading:student-details' user_id=student.user.id %}">View Grades</a>
+    <a href="{% url 'grading:student-instructors' user_id=student.user.id %}">View Instructors</a>
+    <a href="">Log Out</a>
+
+
 {% endblock %}
 
 {% block breadcrumb %}
     <!-- Default breadcrumb (can be overridden by child templates) -->
-    <li class="breadcrumb-item"><a href="{% url 'student_dashboard' %}">Student Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="">Student Dashboard</a></li>
     {% block student_breadcrumb %}{% endblock %}
 {% endblock %}
 

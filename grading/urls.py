@@ -22,8 +22,8 @@ app_name = 'grading'
 urlpatterns = [
     # path('', getAllStudents, name='all-students' ),
     path('students/', getAllStudents, name='all-students'),
-    path('students/<int:student_id>/', getStudentDetails, name='student-details'),
-    path('students/<int:student_id>/instructors/', getStudentInstructors, name='student-instructors'),
+    path('students/<int:user_id>/', getStudentDetails, name='student-details'),
+    path('students/<int:user_id>/instructors/', getStudentInstructors, name='student-instructors'),
     path('students/export-csv/', exportStudentsToCSV, name='export-students-csv'),
     path('students/save-binary/', saveStudentsToBinary, name='save-students-binary'),
 ]

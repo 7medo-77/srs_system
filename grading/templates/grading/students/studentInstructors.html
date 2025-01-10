@@ -1,0 +1,35 @@
+{% extends 'grading/students/dashboardBase.html' %}
+
+{% block title %}
+  Instructors
+{% endblock %}
+
+{% block student_breadcrumb %}
+    <li class="breadcrumb-item active">Instructors</li>
+{% endblock %}
+
+{% block content %}
+    <h1>Instructors</h1>
+    <div class="container d-flex flex-row justify-content-between ">
+      <h2 class="pt-5">{{ student.user.first_name }} {{ student.user.last_name }}</h2>
+      <h2 class="pt-5">{{ student.user.id }}</h2>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Date Joined</th>
+                <th>Instructor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+                <tr>
+                    <td>{{ enrollment.course }}</td>
+                    <td>{{ enrollment.date }}</td>
+                    <td>{{ enrollment.instructor.user.first_name }} {{ enrollment.instructor.user.last_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

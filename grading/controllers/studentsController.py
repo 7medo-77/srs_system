@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from grading.models.student import Student
 from grading.models.studentCourseEnrollment import StudentCourseEnrollment
 from grading.models.instructor import Instructor
+from authentication.models.AuthUser import AuthUser
 import csv
 import pickle
 
@@ -35,12 +36,13 @@ def getAllStudents(request):
     return render(request, 'grading/students/list.html', {'students': students, 'all_students': all_students})
 
 @login_required
-def getStudentDetails(request, student_id):
+def getStudentDetails(request, user_id):
     """
     Retrieve all courses the student is enrolled in, calculate GPA, and pass it to the template.
     """
     # Get the student object or return 404 if not found
-    student = get_object_or_404(Student, student_id=student_id)
+    user = get_object_or_404(AuthUser, id=user_id)
+    student = user.student_profile
 
     # Get all enrollments for the student
     enrollments = StudentCourseEnrollment.objects.filter(student=student)
@@ -51,33 +53,39 @@ def getStudentDetails(request, student_id):
     for enrollment in enrollments:
         total_grade_points += enrollment.grade * enrollment.course.credits
         total_credits += enrollment.course.credits
-    gpa = (total_grade_points / total_credits) if total_credits > 0 else 0
+    gpa = ((total_grade_points / total_credits) / 100) * 4 if total_credits > 0 else 0
 
     return render(request, 'grading/students/details.html', {
         'student': student,
         'enrollments': enrollments,
-        'gpa': gpa,
+        'gpa': round(gpa, 2),
     })
 
 @login_required
-def getStudentInstructors(request, student_id):
+def getStudentInstructors(request, user_id):
     """
     Retrieve all instructors associated with the student's courses.
     """
     # Get the student object or return 404 if not found
-    student = get_object_or_404(Student, student_id=student_id)
+    user = get_object_or_404(AuthUser, id=user_id)
+    student = user.student_profile
+    instructors = student.enrollments
 
     # Get all enrollments for the student
     enrollments = StudentCourseEnrollment.objects.filter(student=student)
+    print(enrollments)
 
     # Get unique instructors from the enrollments
-    instructors = set()
-    for enrollment in enrollments:
-        instructors.add(enrollment.instructor)
+    instructors = [enrollment.instructor for enrollment in enrollments]
 
-    return render(request, 'grading/students/instructors.html', {
+    # for enrollment in enrollments:
+    #     print(enrollment.instructor.user.first_name)
+    #     instructors.add()
+
+    return render(request, 'grading/students/studentInstructors.html', {
         'student': student,
         'instructors': instructors,
+        'enrollments': enrollments,
     })
 
 @login_required
@@ -96,7 +104,7 @@ def exportStudentsToCSV(request):
 
     for student in students:
         writer.writerow([
-            student.student_id,
+            student.user_id,
             f"{student.user.first_name} {student.user.last_name}",
             student.major.name,
             student.date_of_birth,
